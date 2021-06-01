@@ -19,6 +19,6 @@ This module is meant to create a basic MITRE GCP project. It does the following:
 |`charge_number_str`|Yes|string|(none)|MITRE charge number associated with this project|
 |`billing_acct`|No|string|019884-B55966-1F3971|GCP billing account to associate with this project|
 |`existing_folder_id_str`|Yes|string|(none)|GCP folder ID to put the project into. ex: 111111111111|
-|`project_user_group_email`|Yes|string|(none)|GCP folder ID to put the project into. ex: 111111111111|
+|`project_user_group_email`|Yes|string|(none)|Email address of the Google group that contains the project's users|
 |`project_services_list`|Yes|list(string)|(none)|A list of GCP services turned on for the project|
 |`project_user_roles_list`|Yes|list(string)|(none)|A list of roles that are assigned to project users|
