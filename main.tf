@@ -22,31 +22,59 @@ resource "random_string" "project_suffix" {
 resource "google_project" "project" {
   provider   = "google-beta"
   name       = var.project_name_str
-  project_id = "${var.project_id_str}-${random_string.project_suffix.result}"
+  project_id = "${substr(var.base_project_id_str, 0, 22)}-${random_string.project_suffix.result}"
 
   billing_account = var.billing_acct
   folder_id       = var.existing_folder_id_str
 
   labels = {
-    charge_number = var.charge_number_str
+    charge_number = lower(var.charge_number_str)
   }
+}
+
+resource "google_project_service" "base_project_services" {
+  project = google_project.project.project_id
+
+  for_each                   = toset(local.base_services)
+  service                    = each.value
+  disable_dependent_services = true
+
+  depends_on = [
+  google_project.project]
 }
 
 resource "google_project_service" "project_services" {
   project = google_project.project.project_id
-  depends_on = [
-  google_project.project]
 
   for_each                   = toset(var.project_services_list)
   service                    = each.value
   disable_dependent_services = true
+
+  depends_on = [
+    google_project.project,
+    google_project_service.base_project_services
+  ]
 }
 
 locals {
   gcp_project_user_group_str = "group:${var.project_user_group_email}"
 }
 
-resource "google_project_iam_member" "dev_roles" {
+resource "google_project_iam_member" "base_user_roles" {
+  project = google_project.project.project_id
+  member  = local.gcp_project_user_group_str
+
+  for_each = toset(local.base_user_roles)
+  role     = each.value
+
+  depends_on = [
+    google_project.project,
+    google_project_service.project_services,
+    google_project_service.base_project_services
+  ]
+}
+
+resource "google_project_iam_member" "project_user_roles" {
   project = google_project.project.project_id
   member  = local.gcp_project_user_group_str
 
@@ -55,11 +83,7 @@ resource "google_project_iam_member" "dev_roles" {
 
   depends_on = [
     google_project.project,
-    google_project_service.project_services
+    google_project_service.project_services,
+    google_project_service.base_project_services
   ]
-}
-
-resource "google_firebase_project" "firebase_project" {
-  provider = "google-beta"
-  project  = google_project.project.project_id
 }
