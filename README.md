@@ -10,7 +10,7 @@ This module is meant to create a basic MITRE GCP project. It does the following:
 * Adds a MITRE charge number label
 * Add base roles to the group `var.project_user_group_email`
 
-## Variables
+## Input Variables
 
 |`variable`|Required?|Type|Default|Description|
 |:-------- |:-------:|:---:|:-----:|:----------|
@@ -22,3 +22,9 @@ This module is meant to create a basic MITRE GCP project. It does the following:
 |`project_user_group_email`|Yes|string|(none)|Email address of the Google group that contains the project's users|
 |`project_services_list`|Yes|list(string)|(none)|A list of GCP services turned on for the project|
 |`project_user_roles_list`|Yes|list(string)|(none)|A list of roles that are assigned to project users|
+
+## Output
+
+| Output Variable Name | Description                                      |
+|:--------------------:|:-------------------------------------------------|
+| `project_id`         | Newly created GCP project ID                     | 
