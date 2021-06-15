@@ -37,7 +37,8 @@ resource "google_project_service" "base_project_services" {
 
   for_each                   = toset(local.base_services)
   service                    = each.value
-  disable_dependent_services = true
+  disable_dependent_services = false
+  disable_on_destroy         = false
 
   depends_on = [
   google_project.project]
