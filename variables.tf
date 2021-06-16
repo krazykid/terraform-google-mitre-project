@@ -63,3 +63,10 @@ locals {
     "roles/viewer",
   ]
 }
+
+
+variable "disable_services" {
+  type        = bool
+  default     = false
+  description = "Whether or not to disable services during `destroy`. Remember when disabling GCP services, all resources in that service get deleted"
+}

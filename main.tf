@@ -37,11 +37,12 @@ resource "google_project_service" "base_project_services" {
 
   for_each                   = toset(local.base_services)
   service                    = each.value
-  disable_dependent_services = false
-  disable_on_destroy         = false
+  disable_dependent_services = var.disable_services
+  disable_on_destroy         = var.disable_services
 
   depends_on = [
-  google_project.project]
+    google_project.project
+  ]
 }
 
 resource "google_project_service" "project_services" {
