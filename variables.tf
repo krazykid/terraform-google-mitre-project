@@ -39,6 +39,12 @@ variable "project_user_roles_list" {
   description = "A list of roles that are assigned to project users"
 }
 
+variable "additional_project_labels_map" {
+  type        = map(string)
+  description = "A dictionary of GCP labels for the project to add (optional)"
+  default     = {}
+}
+
 locals {
   base_services = [
     "cloudbuild.googleapis.com",
@@ -62,6 +68,12 @@ locals {
     "roles/browser",
     "roles/viewer",
   ]
+
+  charge_number_map = {
+    charge_number = lower(var.charge_number_str)
+  }
+
+  all_labels_map = merge(var.additional_project_labels_map, local.charge_number_map)
 }
 
 

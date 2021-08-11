@@ -27,9 +27,7 @@ resource "google_project" "project" {
   billing_account = var.billing_acct
   folder_id       = var.existing_folder_id_str
 
-  labels = {
-    charge_number = lower(var.charge_number_str)
-  }
+  labels = local.all_labels_map
 }
 
 resource "google_project_service" "base_project_services" {
@@ -50,7 +48,8 @@ resource "google_project_service" "project_services" {
 
   for_each                   = toset(var.project_services_list)
   service                    = each.value
-  disable_dependent_services = true
+  disable_dependent_services = var.disable_services
+  disable_on_destroy         = var.disable_services
 
   depends_on = [
     google_project.project,

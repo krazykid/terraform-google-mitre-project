@@ -23,6 +23,7 @@ This module is meant to create a basic MITRE GCP project. It does the following:
 | `project_services_list`     | Yes     | list(string) | (none)                 | A list of GCP services turned on for the project|
 | `project_user_roles_list`   | Yes     | list(string) | (none)                 | A list of roles that are assigned to project users|
 | `disable_services`          | No      | bool         | `false`                | Whether or not to disable services during `destroy`. Remember when disabling GCP services, all resources in that service get deleted |
+| `additional_project_labels_map`| No   | map(string)  | `{}`                   | A map of labels to add to the project's metadata |
 
 ## Output
 
