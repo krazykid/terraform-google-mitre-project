@@ -8,8 +8,6 @@ provider "google-beta" {
   request_timeout = "60m"
 }
 
-provider "null" {}
-
 resource "random_string" "project_suffix" {
   length  = 5
   special = false
