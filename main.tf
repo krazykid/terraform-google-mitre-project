@@ -8,19 +8,17 @@ provider "google-beta" {
   request_timeout = "60m"
 }
 
-provider "random" {}
-
 provider "null" {}
 
 resource "random_string" "project_suffix" {
   length  = 5
   special = false
-  number  = false
+  numeric = false
   upper   = false
 }
 
 resource "google_project" "project" {
-  provider   = "google-beta"
+  provider   = google-beta
   name       = var.project_name_str
   project_id = "${substr(var.base_project_id_str, 0, 22)}-${random_string.project_suffix.result}"
 
